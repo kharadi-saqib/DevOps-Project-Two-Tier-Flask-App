@@ -1,29 +1,30 @@
-pipeline{
+pipeline {
     agent { label 'remote-server' }
+    
     stages {
         stage('Check Docker Access') {
             steps {
                 sh 'whoami'
                 sh 'groups'
                 sh 'docker info'
+            }
         }
-       }
-    stages{
-        stage('Clone repo'){
-            steps{
+        
+        stage('Clone repo') {
+            steps {
                 git branch: 'main', url: 'https://github.com/kharadi-saqib/DevOps-Project-Two-Tier-Flask-App.git'
             }
         }
-        stage('Build image'){
-            steps{
+        
+        stage('Build Docker Image') {
+            steps {
                 sh 'docker build -t flask-app .'
             }
         }
-        stage('Deploy with docker compose'){
-            steps{
-                // existing container if they are running
+        
+        stage('Deploy with Docker Compose') {
+            steps {
                 sh 'docker compose down || true'
-                // start app, rebuilding flask image
                 sh 'docker compose up -d --build'
             }
         }
