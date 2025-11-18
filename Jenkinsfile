@@ -1,5 +1,5 @@
 pipeline{
-    agent remote-server
+    agent { label 'remote-server' }
     stages{
         stage('Clone repo'){
             steps{
